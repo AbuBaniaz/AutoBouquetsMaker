@@ -29,12 +29,6 @@ AX_PTHREAD
 AC_CONFIG_FILES([
 Makefile
 AutoBouquetsMaker/Makefile
-AutoBouquetsMaker/images/Makefile
 AutoBouquetsMaker/lib/Makefile
-AutoBouquetsMaker/po/Makefile
-AutoBouquetsMaker/providers/Makefile
-AutoBouquetsMaker/src/Makefile
-AutoBouquetsMaker/src/scanner/Makefile
-AutoBouquetsMaker/custom/Makefile
 ])
 AC_OUTPUT

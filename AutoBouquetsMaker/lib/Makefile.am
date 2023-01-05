@@ -1,6 +1,6 @@
 include $(top_srcdir)/Rules-cpp.mak
 
-plugindir = $(libdir)/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/scanner
+plugindir = $(libdir)/enigma2/python
 
 plugin_LTLIBRARIES = dvbreader.la
 dvbreader_la_SOURCES = dvbreader.c

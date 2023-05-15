@@ -325,7 +325,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 					if ((self.providers_makemain[provider] and self.providers_makemain[provider].value == "yes") or (self.providers_makesections[provider] and self.providers_makesections[provider].value == True)) and len(self.providers[provider]["swapchannels"]) > 0:
 						self.list.append(getConfigListEntry(indent + _("Swap channels"), self.providers_swapchannels[provider], _("This option will swap SD versions of channels with HD versions. (eg BBC One SD with BBC One HD, Channel Four SD with with Channel Four HD)")))
 
-					if self.providers[provider]["protocol"] = "sky":
+					if self.providers[provider]["protocol"] == "sky":
 						self.list.append(getConfigListEntry(indent + _("Use Custom hacks"), providers_custom_hack[provider], _("This option will activate the hacks contained in provider files. Eg Skip unviewable channels")))
 
 				providers_enabled.append(provider)

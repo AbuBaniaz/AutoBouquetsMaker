@@ -92,6 +92,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 		self.providers_FTA_only = {}
 		self.providers_order = []
 		self.orbital_supported = []
+		self.providers_custom_hack = {}
 
 		# get supported orbital positions
 		dvbs_nims = nimmanager.getNimListOfType("DVB-S")
@@ -166,6 +167,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 		for provider in list(self.providers.keys()):
 			self.providers_configs[provider] = ConfigYesNo(default=(provider not in self.dependents_list and provider in list(providers_tmp_configs.keys())))
 			self.providers_swapchannels[provider] = ConfigYesNo(default=(provider in providers_tmp_configs and providers_tmp_configs[provider].isSwapChannels()))
+			self.providers_custom_hack[provider] = ConfigYesNo(default=(provider in providers_tmp_configs and providers_tmp_configs[provider].isCustomHacks()))
 
 			custom_bouquets_exists = False
 			self.providers_makemain[provider] = None
@@ -174,6 +176,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 			self.providers_makehd[provider] = None
 			self.providers_makefta[provider] = None
 			self.providers_makeftahd[provider] = None
+			self.providers_custom_hack[provider] = None
 
 			if len(list(self.providers[provider]["sections"].keys())) > 1:	# only if there's more than one section
 				sections_default = True
@@ -322,6 +325,9 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 					if ((self.providers_makemain[provider] and self.providers_makemain[provider].value == "yes") or (self.providers_makesections[provider] and self.providers_makesections[provider].value == True)) and len(self.providers[provider]["swapchannels"]) > 0:
 						self.list.append(getConfigListEntry(indent + _("Swap channels"), self.providers_swapchannels[provider], _("This option will swap SD versions of channels with HD versions. (eg BBC One SD with BBC One HD, Channel Four SD with with Channel Four HD)")))
 
+					if self.providers[provider]["protocol"] = "sky":
+						self.list.append(getConfigListEntry(indent + _("Use Custom hacks"), providers_custom_hack[provider], _("This option will activate the hacks contained in provider files. Eg Skip unviewable channels")))
+
 				providers_enabled.append(provider)
 
 		for provider in providers_enabled:
@@ -401,6 +407,9 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 
 				if self.providers_swapchannels[provider] and self.providers_swapchannels[provider].value:
 					provider_config.setSwapChannels()
+
+				if self.providers_custom_hack[provider] and self.providers_custom_hack[provider].value:
+					provider_config.setCustomHacks()
 
 				config_string += provider_config.serialize()
 

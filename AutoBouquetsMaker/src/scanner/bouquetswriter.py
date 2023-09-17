@@ -47,7 +47,7 @@ class BouquetsWriter():
 				else:
 					orbital_position = transponder["orbital_position"]
 
-				if transponder["system"] == 0: # DVB-S
+				if transponder["system"] == 0:  # DVB-S
 					lamedblist.append("\ts %d:%d:%d:%d:%d:%d:%d\n" %
 						(transponder["frequency"],
 						transponder["symbol_rate"],
@@ -56,7 +56,7 @@ class BouquetsWriter():
 						orbital_position,
 						transponder["inversion"],
 						transponder["flags"]))
-				else: # DVB-S2
+				else:  # DVB-S2
 					multistream = ''
 					t2mi = ''
 					if "t2mi_plp_id" in transponder and "t2mi_pid" in transponder:
@@ -68,8 +68,8 @@ class BouquetsWriter():
 							transponder["is_id"],
 							transponder["pls_code"],
 							transponder["pls_mode"])
-					if t2mi and not multistream: # this is to pad t2mi values if necessary.
-						try: # some images are still not multistream aware after all this time
+					if t2mi and not multistream:  # this is to pad t2mi values if necessary.
+						try:  # some images are still not multistream aware after all this time
 							multistream = ':%d:%d:%d' % (
 								eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
 								eDVBFrontendParametersSatellite.PLS_Gold,
@@ -200,7 +200,7 @@ class BouquetsWriter():
 				else:
 					orbital_position = transponder["orbital_position"]
 
-				if transponder["system"] == 0: # DVB-S
+				if transponder["system"] == 0:  # DVB-S
 					lamedblist.append("s:%d:%d:%d:%d:%d:%d:%d\n" %
 						(transponder["frequency"],
 						transponder["symbol_rate"],
@@ -209,11 +209,11 @@ class BouquetsWriter():
 						orbital_position,
 						transponder["inversion"],
 						transponder["flags"]))
-				else: # DVB-S2
+				else:  # DVB-S2
 					multistream = ''
 					t2mi = ''
 					if "is_id" in transponder and "pls_code" in transponder and "pls_mode" in transponder:
-						try: # some images are still not multistream aware after all this time
+						try:  # some images are still not multistream aware after all this time
 							# don't write default values
 							if not (transponder["is_id"] == eDVBFrontendParametersSatellite.No_Stream_Id_Filter and transponder["pls_code"] == eDVBFrontendParametersSatellite.PLS_Gold and transponder["pls_mode"] == eDVBFrontendParametersSatellite.PLS_Default_Gold_Code):
 								multistream = ',MIS/PLS:%d:%d:%d' % (
@@ -224,8 +224,8 @@ class BouquetsWriter():
 							print("[ABM-BouquetsWriter] some images are still not multistream aware after all this time", err, file=log)
 					if "t2mi_plp_id" in transponder and "t2mi_pid" in transponder:
 						t2mi = ',T2MI:%d:%d' % (
-						transponder["t2mi_plp_id"],
-						transponder["t2mi_pid"])
+							transponder["t2mi_plp_id"],
+							transponder["t2mi_pid"])
 					lamedblist.append("s:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d%s%s\n" %
 						(transponder["frequency"],
 						transponder["symbol_rate"],
@@ -355,7 +355,7 @@ class BouquetsWriter():
 				if count > max_count:
 					break
 
-			#bouquet_out_list.append(row + "\n")
+			# bouquet_out_list.append(row + "\n")
 
 		print("[ABM-BouquetsWriter] Custom seperator name: %s" % name, file=log)
 
@@ -391,7 +391,7 @@ class BouquetsWriter():
 			bouquets.close()
 			recognised_service_lines = ["#SERVICE %d:0:" % i for i in Tools.SERVICEREF_ALLOWED_TYPES] + ["#SERVICE 1:7:"]
 			for line in content:
-				if "%s:" % ':'.join(line.split(":")[:2]) in recognised_service_lines: # service or iptv line found, eg "#SERVICE 4097:0:"
+				if "%s:" % ':'.join(line.split(":")[:2]) in recognised_service_lines:  # service or iptv line found, eg "#SERVICE 4097:0:"
 					return True
 					break
 			return False
@@ -562,7 +562,7 @@ class BouquetsWriter():
 					avoid_duplicates.append(ref)
 					sort_list.append((i, re.sub('^(?![a-z])', 'zzzzz', service['service_name'].lower()), service["service_type"] not in DvbScanner.VIDEO_ALLOWED_TYPES))
 					i += 1
-		sort_list = sorted(sort_list, key=lambda listItem: (listItem[2], listItem[1])) # listItem[2] puts radio channels second.
+		sort_list = sorted(sort_list, key=lambda listItem: (listItem[2], listItem[1]))  # listItem[2] puts radio channels second.
 		for item in sort_list:
 			service = tmp_services[item[0]]
 			last_scanned_bouquet_list.append(self.bouquetServiceLine(service))
@@ -576,8 +576,7 @@ class BouquetsWriter():
 		del avoid_duplicates
 
 	def buildBouquets(self, path, provider_config, services, sections, section_identifier, preferred_order, bouquets_to_hide, section_prefix):
-		if len(section_prefix) > 0:
-			section_prefix = section_prefix + " - "
+		section_sep = " - " if len(section_prefix) > 0 else ""
 		current_number = 0
 
 		# as first thing we're going to cleanup channels
@@ -587,7 +586,7 @@ class BouquetsWriter():
 			if number >= first_section_number:
 				break
 
-			del(services["video"][number])
+			del (services["video"][number])
 
 		print("[ABM-BouquetsWriter] Writing %s bouquet..." % section_identifier, file=log)
 
@@ -618,7 +617,7 @@ class BouquetsWriter():
 		if provider_config.isMakeNormalMain():
 			bouquet_current = open(path + "/%s%s.main.tv" % (self.ABM_BOUQUET_PREFIX, section_identifier), "w")
 			current_bouquet_list = []
-			current_bouquet_list.append("#NAME %s%s\n" % (section_prefix, _('All channels')))
+			current_bouquet_list.append("#NAME %s%s\n" % (section_prefix, "" if len(section_prefix) > 0 and provider_config.isMakeNormalMainOnly() else section_sep + _('All channels')))
 
 			# Clear unused sections
 			sections_c = sections.copy()
@@ -635,7 +634,7 @@ class BouquetsWriter():
 			# Always write first not hidden section on top of list
 			for number in preferred_order_tmp:
 				if number in sections_c and number not in bouquets_to_hide:
-					current_bouquet_list.append(self.styledBouquetMarker("%s%s" % (section_prefix, sections_c[number])))
+					current_bouquet_list.append(self.styledBouquetMarker("%s%s%s" % (section_prefix, section_sep, sections_c[number])))
 					first_section = number
 					break
 
@@ -643,10 +642,11 @@ class BouquetsWriter():
 			section_number = 1
 			for number in preferred_order_tmp:
 				if section_number in sections_c and section_number not in bouquets_to_hide and section_number != first_section:
-					current_bouquet_list.append(self.styledBouquetMarker("%s%s" % (section_prefix, sections_c[section_number])))
+					current_bouquet_list.append(self.styledBouquetMarker("%s%s%s" % (section_prefix, section_sep, sections_c[section_number])))
+				orig_number = number  # Workaround to allow swapped channels to show when their section is hidden. i.e. test the real position in the bouquet (by channel number), not the source of the swap.
 				if provider_config.isSwapChannels() and number in swapDict:
 					number = swapDict[number]
-				if number in services["video"] and number not in bouquets_to_hide:
+				if number in services["video"] and orig_number not in bouquets_to_hide:  # "bouquets_to_hide" is a complete list of all numbers in each hidden section, whether a channel occupies that number or not.
 					current_bouquet_list.append(self.bouquetServiceLine(services["video"][number]))
 				else:
 					current_bouquet_list.append(self.spacer())
@@ -663,10 +663,10 @@ class BouquetsWriter():
 			current_bouquet_list = []
 			if provider_config.isMakeHDMain():
 				hd_or_ftahd = "HD"
-				current_bouquet_list.append("#NAME %s%s\n" % (section_prefix, _('HD Channels')))
+				current_bouquet_list.append("#NAME %s%s%s\n" % (section_prefix, section_sep, _('HD Channels')))
 			elif provider_config.isMakeFTAHDMain():
 				hd_or_ftahd = "FTAHD"
-				current_bouquet_list.append("#NAME %s%s\n" % (section_prefix, _('FTA HD Channels')))
+				current_bouquet_list.append("#NAME %s%s%s\n" % (section_prefix, section_sep, _('FTA HD Channels')))
 
 			higher_number = sorted(list(sections.keys()))[0]
 
@@ -684,7 +684,7 @@ class BouquetsWriter():
 						todo = None
 						if section_key_current not in bouquets_to_hide:
 							if section_key_current in sections_c:
-								current_bouquet_list.append(self.styledBouquetMarker("%s%s" % (section_prefix, sections_c[section_key_current])))
+								current_bouquet_list.append(self.styledBouquetMarker("%s%s%s" % (section_prefix, section_sep, sections_c[section_key_current])))
 							todo = section_key_current
 
 						if section_key_current in section_keys_temp:
@@ -741,21 +741,21 @@ class BouquetsWriter():
 					if key == section_number:
 						key_found = True
 
-				if higher_number == 0:	# it mean this is the last section
-					higher_number = sorted(list(services["video"].keys()))[-1]	# the highest number!
+				if higher_number == 0:  # it mean this is the last section
+					higher_number = sorted(list(services["video"].keys()))[-1]  # the highest number!
 
 				# write it!
 				bouquet_current = open(path + "/%s%s.%d.tv" % (self.ABM_BOUQUET_PREFIX, section_identifier, section_number), "w")
 				current_bouquet_list = []
 				if section_number not in bouquets_to_hide:
-					current_bouquet_list.append("#NAME %s%s\n" % (section_prefix, section_name))
-					current_bouquet_list.append(self.styledBouquetMarker("%s%s" % (section_prefix, section_name)))
+					current_bouquet_list.append("#NAME %s%s%s\n" % (section_prefix, section_sep, section_name))
+					current_bouquet_list.append(self.styledBouquetMarker("%s%s%s" % (section_prefix, section_sep, section_name)))
 				elif section_current_number == 0:
-					current_bouquet_list.append("#NAME %sHidden\n" % section_prefix)
+					current_bouquet_list.append("#NAME %s%sHidden\n" % (section_prefix, section_sep))
 					current_bouquet_list.append("#SERVICE 1:64:0:0:0:0:0:0:0:0:\n")
-					current_bouquet_list.append("#DESCRIPTION %sHidden\n" % section_prefix)
+					current_bouquet_list.append("#DESCRIPTION %s%sHidden\n" % (section_prefix, section_sep))
 
-				#current_number += 1
+				# current_number += 1
 				section_current_number += 1
 				for number in list(range(section_current_number, higher_number + 1)):
 					if provider_config.isSwapChannels() and number in swapDict:
@@ -780,9 +780,9 @@ class BouquetsWriter():
 			provider_config.isMakeCustomMain():
 			bouquet_current = open(path + "/%s%s.separator.tv" % (self.ABM_BOUQUET_PREFIX, section_identifier), "w")
 			current_bouquet_list = []
-			current_bouquet_list.append("#NAME %sSeparator\n" % section_prefix)
+			current_bouquet_list.append("#NAME %s%sSeparator\n" % (section_prefix, section_sep))
 			current_bouquet_list.append("#SERVICE 1:64:0:0:0:0:0:0:0:0:\n")
-			current_bouquet_list.append("#DESCRIPTION %sSeparator\n" % section_prefix)
+			current_bouquet_list.append("#DESCRIPTION %s%sSeparator\n" % (section_prefix, section_sep))
 
 			for x in list(range(current_number, (int(current_number / 1000) + 1) * 1000)):
 				current_bouquet_list.append(self.spacer())
@@ -796,7 +796,7 @@ class BouquetsWriter():
 		if provider_config.isMakeHD():
 			bouquet_current = open(path + "/%s%s.hd.tv" % (self.ABM_BOUQUET_PREFIX, section_identifier), "w")
 			current_bouquet_list = []
-			current_bouquet_list.append("#NAME %s%s\n" % (section_prefix, _('HD Channels')))
+			current_bouquet_list.append("#NAME %s%s%s\n" % (section_prefix, section_sep, _('HD Channels')))
 
 			# Clear unused sections
 			sections_c = sections.copy()
@@ -811,7 +811,7 @@ class BouquetsWriter():
 					todo = None
 					if section_key_current not in bouquets_to_hide:
 						if section_key_current in sections_c:
-							current_bouquet_list.append(self.styledBouquetMarker("%s%s" % (section_prefix, sections_c[section_key_current])))
+							current_bouquet_list.append(self.styledBouquetMarker("%s%s%s" % (section_prefix, section_sep, sections_c[section_key_current])))
 						todo = section_key_current
 
 					if section_key_current in section_keys_temp:
@@ -839,7 +839,7 @@ class BouquetsWriter():
 		if provider_config.isMakeFTAHD():
 			bouquet_current = open(path + "/%s%s.ftahd.tv" % (self.ABM_BOUQUET_PREFIX, section_identifier), "w")
 			current_bouquet_list = []
-			current_bouquet_list.append("#NAME %s%s\n" % (section_prefix, _('FTA HD Channels')))
+			current_bouquet_list.append("#NAME %s%s%s\n" % (section_prefix, section_sep, _('FTA HD Channels')))
 
 			# Clear unused sections
 			sections_c = sections.copy()
@@ -854,7 +854,7 @@ class BouquetsWriter():
 					todo = None
 					if section_key_current not in bouquets_to_hide:
 						if section_key_current in sections_c:
-							current_bouquet_list.append(self.styledBouquetMarker("%s%s" % (section_prefix, sections_c[section_key_current])))
+							current_bouquet_list.append(self.styledBouquetMarker("%s%s%s" % (section_prefix, section_sep, sections_c[section_key_current])))
 						todo = section_key_current
 
 					if section_key_current in section_keys_temp:
@@ -882,7 +882,7 @@ class BouquetsWriter():
 		if provider_config.isMakeFTA():
 			bouquet_current = open(path + "/%s%s.fta.tv" % (self.ABM_BOUQUET_PREFIX, section_identifier), "w")
 			current_bouquet_list = []
-			current_bouquet_list.append("#NAME %s%s\n" % (section_prefix, _('FTA Channels')))
+			current_bouquet_list.append("#NAME %s%s%s\n" % (section_prefix, section_sep, _('FTA Channels')))
 
 			# Clear unused sections
 			sections_c = sections.copy()
@@ -899,7 +899,7 @@ class BouquetsWriter():
 					todo = None
 					if section_key_current not in bouquets_to_hide:
 						if section_key_current in sections_c:
-							current_bouquet_list.append(self.styledBouquetMarker("%s%s" % (section_prefix, sections_c[section_key_current])))
+							current_bouquet_list.append(self.styledBouquetMarker("%s%s%s" % (section_prefix, section_sep, sections_c[section_key_current])))
 						todo = section_key_current
 
 					if section_key_current in section_keys_temp:
@@ -926,11 +926,11 @@ class BouquetsWriter():
 		# now the radio bouquet
 		bouquet_current = open(path + "/%s%s.main.radio" % (self.ABM_BOUQUET_PREFIX, section_identifier), "w")
 		current_bouquet_list = []
-		current_bouquet_list.append("#NAME %s%s\n" % (section_prefix, _('Radio Channels')))
-		current_bouquet_list.append(self.styledBouquetMarker("%s%s" % (section_prefix, _('Radio Channels'))))
+		current_bouquet_list.append("#NAME %s%s%s\n" % (section_prefix, section_sep, _('Radio Channels')))
+		current_bouquet_list.append(self.styledBouquetMarker("%s%s%s" % (section_prefix, section_sep, _('Radio Channels'))))
 
 		if len(list(services["radio"].keys())) > 0:
-			higher_number = sorted(list(services["radio"].keys()))[-1]	# the highest number!
+			higher_number = sorted(list(services["radio"].keys()))[-1]  # the highest number!
 			for number in list(range(1, higher_number + 1)):
 				if number in services["radio"]:
 					current_bouquet_list.append(self.bouquetServiceLine(services["radio"][number]))

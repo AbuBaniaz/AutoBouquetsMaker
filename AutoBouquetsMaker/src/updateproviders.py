@@ -37,7 +37,7 @@ from .skin_templates import skin_downloadBar
 
 
 class AutoBouquetsMaker_UpdateProviders(Screen):
-# Note to skinners: no need to skin this screen if you have skinned the screen 'AutoBouquetsMaker'.
+	# Note to skinners: no need to skin this screen if you have skinned the screen 'AutoBouquetsMaker'.
 	skin = skin_downloadBar()
 
 	def __init__(self, session, args=0):
@@ -215,7 +215,7 @@ class AutoBouquetsMaker_UpdateProviders(Screen):
 		if '<provider>' in providerxml:
 
 			try:
-				dom = parseString(providerxml) # This is to check the downloaded xml file parses
+				dom = parseString(providerxml)  # This is to check the downloaded xml file parses
 			except:
 				dom = None
 			if dom is not None:

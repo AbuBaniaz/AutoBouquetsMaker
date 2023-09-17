@@ -2,7 +2,7 @@ class ProviderConfig():
 	def __init__(self, value=""):
 		self.provider = ""
 		self.area = ""
-		self.flags = 0x1d	# default value mean main:yes, sections: yes, hd: yes, fta: yes
+		self.flags = 0x1d  # default value mean main:yes, sections: yes, hd: yes, fta: yes
 		self.customfilename = ""
 
 		if len(value) > 0:
@@ -41,6 +41,9 @@ class ProviderConfig():
 
 	def isMakeNormalMain(self):
 		return (self.flags & 0x03) == 0x01
+
+	def isMakeNormalMainOnly(self):
+		return (self.flags & 0xdf) == 0x01
 
 	def isMakeCustomMain(self):
 		return (self.flags & 0x03) == 0x02

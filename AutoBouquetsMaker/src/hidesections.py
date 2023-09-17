@@ -31,12 +31,12 @@ class AutoBouquetsMaker_HideSections(Screen):
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("Save"))
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
-				{
-					"red": self.keyCancel,
-					"green": self.keySave,
-					"ok": self.ok,
-					"cancel": self.keyCancel,
-				}, -2)
+		{
+			"red": self.keyCancel,
+			"green": self.keySave,
+			"ok": self.ok,
+			"cancel": self.keyCancel,
+		}, -2)
 
 		self.providers = Manager().getProviders()
 		self.providers_enabled = []
@@ -58,7 +58,7 @@ class AutoBouquetsMaker_HideSections(Screen):
 	def buildListEntry(self, enabled, name, type):
 		pixmap = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_%s.png" % ("on" if enabled else "off")))
 
-		return((pixmap, str(name), str(type)))
+		return ((pixmap, str(name), str(type)))
 
 	def refresh(self):
 		self.providers_selected = config.autobouquetsmaker.hidesections.value.split("|")

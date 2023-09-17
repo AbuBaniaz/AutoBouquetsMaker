@@ -33,7 +33,7 @@
 		<configuration key="hd_freesat_110_c" bouquet="0x110" region="0xc">BBC Yorkshire/ITV Tyne Tees S</configuration>
 		<configuration key="hd_freesat_110_d" bouquet="0x110" region="0xd">BBC E Midlands/ITV Central E</configuration>
 		<configuration key="hd_freesat_110_e" bouquet="0x110" region="0xe">BBC E Midlands/ITV Central W</configuration>
-		<configuration key="hd_freesat_110_f" bouquet="0x110" region="0xf">BBC E Midlands/ITV Central E</configuration>
+		<!-- configuration key="hd_freesat_110_f" bouquet="0x110" region="0xf">BBC E Midlands/ITV Central E</configuration --><!-- sequence in this bouquet is duplicated in hd_freesat_110_d -->
 		<configuration key="hd_freesat_110_10" bouquet="0x110" region="0x10">BBC E Midlands/ITV Yorkshire E</configuration>
 		<configuration key="hd_freesat_110_11" bouquet="0x110" region="0x11">BBC East (E)/ITV Anglia S</configuration>
 		<configuration key="hd_freesat_110_12" bouquet="0x110" region="0x12">BBC East (E)/ITV London</configuration>
@@ -41,7 +41,7 @@
 		<configuration key="hd_freesat_110_14" bouquet="0x110" region="0x14">BBC West/Westcountry W</configuration>
 		<configuration key="hd_freesat_110_15" bouquet="0x110" region="0x15">BBC West/ITV Westcountry W</configuration>
 		<configuration key="hd_freesat_110_16" bouquet="0x110" region="0x16">BBC West/ITV Meridian Thames Valley</configuration>
-		<configuration key="hd_freesat_110_17" bouquet="0x110" region="0x17">BBC West/ITV Meridian Thames Valley</configuration>
+		<!-- configuration key="hd_freesat_110_17" bouquet="0x110" region="0x17">BBC West/ITV Meridian Thames Valley</configuration --><!-- sequence in this bouquet is duplicated in hd_freesat_110_16 -->
 		<configuration key="hd_freesat_110_18" bouquet="0x110" region="0x18">BBC S East/ITV Meridian S</configuration>
 		<configuration key="hd_freesat_110_19" bouquet="0x110" region="0x19">BBC S East/ITV Meridian SE</configuration>
 		<configuration key="hd_freesat_110_1a" bouquet="0x110" region="0x1a">BBC S East/ITV Meridian E</configuration>
@@ -81,7 +81,7 @@
 		<section number="700">Radio</section>
 		<section number="800">Shopping</section>
 		<section number="949">Regional</section>
-		<section number="980">BBC Red Button</section>
+		<section number="970">BBC Red Button</section>
 		<section number="998">Freesat 4K</section>
 		<section number="999">Freesat Info</section>
 	</sections>
@@ -101,54 +101,42 @@ except:
 
 	itv_rename = {
 		# ITV regions
-		33771: "ITV Border",
-		33772: "ITV Border Scotland",
-		33776: "ITV Central West",
-		33777: "ITV Channel Isles",
-		33778: "ITV Granada",
-		33779: "ITV London",
-		33780: "ITV Meridian East",
-		33782: "ITV Meridian South",
-		33784: "ITV Tyne Tees",
-		33786: "ITV West Country",
-		33788: "ITV West",
-		33790: "ITV Yorkshire West",
+		33772: "ITV1 Border Scotland",
+		33776: "ITV1 Central West",
+		33777: "ITV1 Channel Isles",
+		33778: "ITV1 Granada",
+		33779: "ITV1 London",
+		33780: "ITV1 Meridian East",
 		33791: "STV North",
 		33792: "STV West",
 		33793: "STV East",
-		33794: "UTV",
-		33795: "ITV +1 Meridian East",
-		33796: "ITV +1 Granada",
-		33797: "ITV +1 Central West",
-		33798: "ITV +1 London",
-		33800: "ITV +1 West Country",
-		33801: "ITV +1 Tyne Tees",
-		33802: "ITV +1 Yorkshire",
-		33803: "ITV +1 Anglia",
-		33804: "ITV +1 Wales",
-		33805: "ITV +1 West",
-		33806: "ITV Central East",
-		33808: "UTV HD",
-		33810: "ITV Central East HD",
-		33811: "ITV Yorkshire East HD",
-		33812: "ITV Meridian South Coast HD",
-		33813: "ITV Meridian Thames Valley HD",
-		33814: "ITV Anglia West HD",
+#		33794: "UTV",	#This is correct on stream, no need for rename.
 		33876: "STV Tayside",
-		33878: "ITV Yorkshire East",
-		33879: "ITV Anglia West",
-		33880: "ITV Meridian North",
-		33882: "ITV Anglia East HD",
-		33883: "ITV Tyne Tees HD",
-		33884: "ITV Yorkshire West HD",
-		42773: "ITV London HD",
-		42775: "ITV Granada HD",
-		42779: "ITV Meridian East HD",
-		42780: "ITV Central West HD",
-		42781: "ITV Wales HD",
-		42784: "ITV Border England HD",
-		42785: "ITV Westcountry West HD",
-		42786: "ITV Westcountry South West HD",
+
+		# +1 Channels
+		33795: "ITV1+1 Meridian East",
+		33796: "ITV1+1 Granada",
+		33797: "ITV1+1 Central West",
+		33798: "ITV1+1 London",
+
+		# HD Channels
+#		33808: "UTV HD",	#This is correct on stream, no need for rename.
+		33810: "ITV1 Central East HD",
+		33811: "ITV1 Yorkshire East HD",
+		33812: "ITV1 Meridian South Coast HD",
+		33813: "ITV1 Meridian Thames Valley HD",
+		33814: "ITV1 Anglia West HD",
+		33882: "ITV1 Anglia East HD",
+		33883: "ITV1 Tyne Tees HD",
+		33884: "ITV1 Yorkshire West HD",
+		42773: "ITV1 London HD",
+		42775: "ITV1 Granada HD",
+		42779: "ITV1 Meridian East HD",
+		42780: "ITV1 Central West HD",
+#		42781: "ITV1 Wales HD",	#This is correct on stream, no need for rename.
+		42784: "ITV1 Border England HD",
+		42785: "ITV1 West Country West HD",
+		42786: "ITV1 West Country SW HD",
 		52777: "STV West HD",
 	}
 
@@ -157,8 +145,10 @@ except:
 	}
 
 	rename_by_sid = {
-		52575: "Freesports HD",
+		51118: "WildEarth HD",
 	}
+
+	skiplist = ["Channel moved",]
 
 	servicehack_variable_cache["add_audio_channels_to_video_bouquet"] = True
 
@@ -195,6 +185,9 @@ elif service["number"] > 999 or service["number"] < 101:
 #radio channels
 if service["number"] >= 700 and service["number"] < 800:
 	service["service_type"] = 2
+
+if (service["number"] in skiplist or service["service_name"] in skiplist):
+	skip.skip = True
 
 ]]>
 	</servicehacks>

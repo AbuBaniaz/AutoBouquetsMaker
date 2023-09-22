@@ -19,7 +19,6 @@ import dvbreader
 from Plugins.SystemPlugins.AutoBouquetsMaker.skin_templates import skin_downloadBar
 
 import os
-import errno
 import sys
 import re
 

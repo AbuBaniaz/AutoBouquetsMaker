@@ -5,7 +5,6 @@ from .. import log
 import dvbreader
 import datetime
 import time
-import os
 from Components.config import config
 
 

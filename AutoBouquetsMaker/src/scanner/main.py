@@ -24,10 +24,8 @@ from Plugins.SystemPlugins.AutoBouquetsMaker.skin_templates import skin_download
 from time import localtime, time, strftime, mktime
 
 from .. import log
-import os
-import sys
 
-from Tools.Directories import resolveFilename, fileExists, SCOPE_CURRENT_SKIN
+from Tools.Directories import fileExists
 
 
 class AutoBouquetsMaker(Screen):

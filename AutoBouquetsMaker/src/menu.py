@@ -5,7 +5,6 @@ from __future__ import absolute_import
 from . import _
 
 from .scanner.main import AutoBouquetsMaker, AutoScheduleTimer
-from .scanner.manager import Manager
 from .about import AutoBouquetsMaker_About
 from .setup import AutoBouquetsMaker_Setup, AutoBouquetsMaker_ProvidersSetup
 from .hidesections import AutoBouquetsMaker_HideSections
@@ -14,23 +13,19 @@ from .ordering import AutoBouquetsMaker_Ordering
 from .deletebouquets import AutoBouquetsMaker_DeleteBouquets, AutoBouquetsMaker_DeleteMsg
 from .updateproviders import AutoBouquetsMaker_UpdateProviders
 from .scanner.frequencyfinder import AutoBouquetsMaker_FrequencyFinder
-
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.config import config
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.ScrollLabel import ScrollLabel
-
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
-
 from .skin_templates import skin_mainmenu, skin_log
 
-from time import localtime, time, strftime
+
 import os
 import sys
 from . import log

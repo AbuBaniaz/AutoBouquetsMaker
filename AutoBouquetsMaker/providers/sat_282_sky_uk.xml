@@ -388,17 +388,17 @@ except:
 	}
 
 	itv_rename = {
-		1020: "ITV1 Border Scotland",
+#		1020: "ITV1 Border Scotland", #Closed
 		6000: "ITV1 London",
-#		6020: "ITV1 Wales",	#This is correct on stream, no need for rename.
+#		6020: "ITV1 Wales",	#This is correct on stream, no need for rename. #Closed
 		6130: "ITV1 Granada",
 		6142: "ITV1 Meridian East",
-		6200: "ITV1 Channel Isles",
+#		6200: "ITV1 Channel Isles", #Closed
 		6210: "STV North",
-		6220: "STV West",
-#		6230: "UTV",	#This is correct on stream, no need for rename.
+#		6220: "STV West", #Closed
+#		6230: "UTV",	#This is correct on stream, no need for rename. #Closed
 		6300: "ITV1 Central West",
-		6325: "STV Tayside",
+#		6325: "STV Tayside", #Closed
 		6371: "STV East",
 
 		# +1 Channels

@@ -450,6 +450,14 @@ except:
 
 	rename_by_sid = {
 		51118: "WildEarth HD",
+		10120: "ITV1",
+		10130: "STV",
+		10131: "STV",
+		10146: "ITV1+1",
+		10148: "ITV1+1",
+		10152: "ITV2",
+		10158: "ITV3+1",
+		10166: "ITV4+1",
 	}
 
 	whitelist = ['ITV HD',752,]

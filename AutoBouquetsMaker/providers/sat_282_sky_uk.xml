@@ -450,7 +450,7 @@ except:
 
 	rename_by_sid = {
 		51118: "WildEarth HD",
-		10120: "ITV1",
+		10120: "ITV1 Central West",
 		10130: "STV",
 		10131: "STV",
 		10146: "ITV1+1",

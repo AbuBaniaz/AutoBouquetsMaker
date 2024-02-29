@@ -1,1 +1,1 @@
-SUBDIRS = images lib po providers src custom
+SUBDIRS = lib

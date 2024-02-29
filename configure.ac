@@ -4,15 +4,15 @@ AC_CONFIG_HEADERS([enigma2-plugins-config.h])
 
 # Silent rules are available since 1.11, but older versions
 # are still in use. So don't use them unconditionally.
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+#m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 AC_USE_SYSTEM_EXTENSIONS
 AC_SYS_LARGEFILE
 
 AC_PROG_CC
 AC_PROG_CXX
-m4_ifdef([LT_INIT], [LT_INIT], [AC_PROG_LIBTOOL])
-AC_CONFIG_MACRO_DIR([m4])
+#m4_ifdef([LT_INIT], [LT_INIT], [AC_PROG_LIBTOOL])
+#AC_CONFIG_MACRO_DIR([m4])
 
 AC_CHECK_HEADERS([dbox/fp.h dbox/lcd-ks0713.h])
 
@@ -29,12 +29,6 @@ AX_PTHREAD
 AC_CONFIG_FILES([
 Makefile
 AutoBouquetsMaker/Makefile
-AutoBouquetsMaker/images/Makefile
 AutoBouquetsMaker/lib/Makefile
-AutoBouquetsMaker/po/Makefile
-AutoBouquetsMaker/providers/Makefile
-AutoBouquetsMaker/src/Makefile
-AutoBouquetsMaker/src/scanner/Makefile
-AutoBouquetsMaker/custom/Makefile
 ])
 AC_OUTPUT

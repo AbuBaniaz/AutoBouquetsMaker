@@ -97,19 +97,6 @@
 	</swapchannels>
 	<servicehacks>
 <![CDATA[
-def makeServiceRef(service):
-	return "1:0:%X:%X:%X:%X:%X:0:0:0:" % (
-		service["service_type"],
-		service["service_id"],
-		service["transport_stream_id"],
-		service["original_network_id"],
-		service["namespace"],
-	)
-
-try:
-	from Screens.InfoBarGenerics import streamrelay
-except:
-	streamrelay = None
 try:
 	is_assigned
 except:
@@ -270,6 +257,7 @@ except:
 		5237, # TRT World HD
 	]
 
+#Some transponders containing encrypted services that cannot be decrypted by Enigma2
 	broken_TSIDS = [
 		0x7D3,
 		0x7D7,
@@ -292,6 +280,8 @@ except:
 		0x7F2,
 	]
 
+#Some encrypted services that cannot be decrypted by Enigma2
+#Not sure how/why they are different to the ones in blacklist_by_id
 	broken_CHIDs = [
 		0x44B,
 		0x48F,
@@ -308,9 +298,6 @@ except:
 		0xFD6,
 		0x177E,
 	]
-
-	# List channels to exclude from the whitelist_streamrelay file
-	stream_relay_blacklist = ["U1MON", "U2MON"]
 
 # Correct service type of HD channels not marked as such
 if service["service_type"] in DvbScanner.VIDEO_ALLOWED_TYPES and service["service_type"] not in DvbScanner.HD_ALLOWED_TYPES and service["service_name"][-2:] == 'HD':
@@ -346,6 +333,18 @@ if service["channel_id"] in encrypted_by_id:
 if service["channel_id"] in fta_by_id:
 	service["free_ca"] = 0
 
+# Remove encrypted services from certain transport streams
+if custom and service["service_type"] != 2 and service["transport_stream_id"] in broken_TSIDS and service["free_ca"] != 0:
+	while service["number"] in LCNs_in_use:
+		LCNs_in_use.remove(service["number"])
+	skip.skip = True
+
+# Remove certain encrypted services that may be on transport streams not listed in broken_TSIDS
+if custom and service["service_type"] != 2 and service["transport_stream_id"] in broken_CHIDs and service["free_ca"] != 0:
+	while service["number"] in LCNs_in_use:
+		LCNs_in_use.remove(service["number"])
+	skip.skip = True
+
 # Add channels by name
 if custom and service["service_name"] in channels_to_add_by_name and service["service_type"] in DvbScanner.VIDEO_ALLOWED_TYPES and channels_to_add_by_name[service["service_name"]] not in LCNs_in_use:
 	LCNs_in_use.append(channels_to_add_by_name[service["service_name"]])
@@ -365,10 +364,6 @@ if service["service_type"] != 2 and (service["number"] in whitelist or service["
 	pass
 elif custom and service["service_type"] != 2 and (service["number"] in blacklist or service["service_name"] in blacklist):
 	skip.skip = True
-elif streamrelay and service["service_name"] not in stream_relay_blacklist and service["service_type"] != 2 and service["transport_stream_id"] in broken_TSIDS and service["free_ca"] != 0 and (service["service_type"] not in DvbScanner.HD_ALLOWED_TYPES or "channel_id" in service and service["channel_id"] in broken_CHIDs):
-	sref = makeServiceRef(service)
-	if sref not in streamrelay.data:
-		streamrelay.data += [sref]
 elif custom and service["service_type"] in DvbScanner.HD_ALLOWED_TYPES and service["free_ca"] != 0:
 	while service["number"] in LCNs_in_use:
 		LCNs_in_use.remove(service["number"])

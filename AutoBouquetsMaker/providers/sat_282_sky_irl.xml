@@ -283,20 +283,20 @@ except:
 #Some encrypted services that cannot be decrypted by Enigma2
 #Not sure how/why they are different to the ones in blacklist_by_id
 	broken_CHIDs = [
-		0x44B,
-		0x48F,
-		0x490,
-		0x492,
-		0x4BA,
-		0x4C2,
-		0x4E2,
-		0x4F6,
-		0x551,
-		0xB00,
-		0xFC2,
-		0xFD2,
-		0xFD6,
-		0x177E,
+		0x44B, #1099, TNTSBoxOff2HD
+		0x48F, #1167, STV Dundee HD
+		0x490, #1168, STV North HD
+		0x492, #1170, STV East HD
+		0x4BA, #1210, TNTSBoxOffHD
+		0x4C2, #1218, TNTSBoxOff2HD
+		0x4E2, #1024,
+		0x4F6, #1270, RTÉ2 HD
+		0x551, #1361,
+		0xB00, #2816, RTÉ One HD
+		0xFC2, #4034, TG4 HD
+		0xFD2, #4050, Sky News HD
+		0xFD6, #4054, Sky News HD
+		0x177E, #6014, TNTSBoxOffHD
 	]
 
 # Correct service type of HD channels not marked as such

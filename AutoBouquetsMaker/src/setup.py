@@ -182,7 +182,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 				self.providers_makehd[provider] = ConfigYesNo(default=hd_default)
 				if self.providers[provider].get("show_fta_options", True):
 					self.providers_makefta[provider] = ConfigYesNo(default=fta_default)
-					self.providers_makeftahd[provider] = ConfigYesNo(default=ftahd_default)
+				self.providers_makeftahd[provider] = ConfigYesNo(default=ftahd_default)  # always created; shown for FTA-only providers too
 				custom_bouquets_exists = True
 
 			if sorted(list(self.providers[provider]["sections"].keys()))[0] > 1:
@@ -190,14 +190,16 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 				show_fta_options = self.providers[provider].get("show_fta_options", True)
 				makemain_list = [("yes", _("yes (all channels)"))]
 				if self.providers[provider]["protocol"] != "fastscan":
-					makemain_list.append(("hd", _("yes (only HD)")))
 					if show_fta_options:
-						makemain_list.append(("ftahd", _("yes (only FTA HD)")))
+						makemain_list.append(("hd", _("yes (only HD)")))
+					makemain_list.append(("ftahd", _("yes (only FTA HD)")))
 
 				if provider not in providers_tmp_configs and self.providers[provider]["protocol"] == "sky":
-					makemain_default = "ftahd" if show_fta_options else "hd"  # First bouquet option starts as "FTA HD" (or "HD" if FTA options hidden)
+					makemain_default = "ftahd"  # First bouquet option starts as "FTA HD"
 				elif provider not in providers_tmp_configs and self.providers[provider]["protocol"] in ("vmuk", "vmuk2"):
-					makemain_default = "hd"  # First bouquet option starts as "HD"
+					makemain_default = "hd" if show_fta_options else "ftahd"  # "HD" normally, "FTA HD" if FTA-only provider
+				elif provider not in providers_tmp_configs and not show_fta_options:
+					makemain_default = "ftahd"  # FTA-only provider (e.g. Freesat) defaults to FTA HD
 				elif provider not in providers_tmp_configs:
 					makemain_default = "yes"  # First bouquet option starts as "All channels"
 
@@ -205,9 +207,9 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 					makemain_default = "yes"
 
 				if self.providers[provider]["protocol"] != "fastscan":
-					if provider in providers_tmp_configs and providers_tmp_configs[provider].isMakeHDMain():
+					if show_fta_options and provider in providers_tmp_configs and providers_tmp_configs[provider].isMakeHDMain():
 						makemain_default = "hd"
-					if show_fta_options and provider in providers_tmp_configs and providers_tmp_configs[provider].isMakeFTAHDMain():
+					if provider in providers_tmp_configs and providers_tmp_configs[provider].isMakeFTAHDMain():
 						makemain_default = "ftahd"
 
 				if len(bouquets_list) > 0 and config.autobouquetsmaker.placement.getValue() == 'top':
@@ -306,10 +308,18 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 					setupList.append(getConfigListEntry(indent + _("FTA only"), self.providers_FTA_only[provider], _("This affects all bouquets. Select 'no' to scan in all services. Select 'yes' to skip encrypted ones.")))
 
 				if self.providers_makemain[provider]:
+					# When FTA only is enabled (user toggle or provider is FTA-only via show_fta_options),
+					# remove "yes (only HD)" from main bouquet choices.
 					# Always restore from full original choices first to avoid permanent mutation across createSetup() calls.
+					is_fta_only = self.providers_FTA_only[provider].value or not self.providers[provider].get("show_fta_options", True)
 					full_choices = self.providers_makemain_choices.get(provider)
 					if full_choices:
-						self.providers_makemain[provider].setChoices(full_choices, self.providers_makemain[provider].value)
+						if is_fta_only:
+							filtered = [(k, v) for k, v in full_choices if k != "hd"]
+							current = self.providers_makemain[provider].value if self.providers_makemain[provider].value != "hd" else "yes"
+							self.providers_makemain[provider].setChoices(filtered, current)
+						else:
+							self.providers_makemain[provider].setChoices(full_choices, self.providers_makemain[provider].value)
 					setupList.append(getConfigListEntry(indent + _("Create main bouquet"), self.providers_makemain[provider], _('This option has several choices "Yes", (create a bouquet with all the channels in it), "Yes HD only", (will group all HD channels into this bouquet), "Custom", (allows you to select your own bouquet), "No", (do not use a main bouquet)')))
 
 				if self.providers_custommain[provider] and self.providers_makemain[provider] and self.providers_makemain[provider].value == "custom":
@@ -318,15 +328,15 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 				if self.providers_makesections[provider]:
 					setupList.append(getConfigListEntry(indent + _("Create sections bouquets"), self.providers_makesections[provider], _("This option will create bouquets for each type of channel, ie Entertainment, Movies, Documentary.")))
 
-				# Hide Create HD bouquet when FTA only is enabled
-				if self.providers_makehd[provider] and not self.providers_FTA_only[provider].value and (self.providers_makemain[provider] is None or self.providers_makemain[provider].value != "hd"):
+				# Hide Create HD bouquet when FTA only is enabled (user toggle or provider is FTA-only)
+				if self.providers_makehd[provider] and not is_fta_only and (self.providers_makemain[provider] is None or self.providers_makemain[provider].value != "hd"):
 					setupList.append(getConfigListEntry(indent + _("Create HD bouquet"), self.providers_makehd[provider], _("This option will create a High Definition bouquet, it will group all HD channels into this bouquet.")))
 
 				if self.providers_makefta[provider] and not self.providers_FTA_only[provider].value:
 					setupList.append(getConfigListEntry(indent + _("Create FTA bouquet"), self.providers_makefta[provider], _("This option will create a FreeToAir bouquet, it will group all free channels into this bouquet.")))
 
-				# Show Create FTA HD bouquet regardless of FTA only state, unless already used as main bouquet
-				if self.providers_makeftahd[provider] and (self.providers_makemain[provider] is None or self.providers_makemain[provider].value != "ftahd"):
+				# Show Create FTA HD bouquet always
+				if self.providers_makeftahd[provider]:
 					setupList.append(getConfigListEntry(indent + _("Create FTA HD bouquet"), self.providers_makeftahd[provider], _("This option will create a FreeToAir High Definition bouquet, it will group all FTA HD channels into this bouquet.")))
 
 				if self.providers_extraservices[provider]:
@@ -395,14 +405,14 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 				if self.providers_makesections[provider] and self.providers_makesections[provider].value:
 					provider_config.setMakeSections()
 
-				if self.providers_makehd[provider] and self.providers_makehd[provider].value and (self.providers_makemain[provider] is None or self.providers_makemain[provider].value != "hd"):
+				if self.providers_makehd[provider] and self.providers_makehd[provider].value and (self.providers_makemain[provider] is None or self.providers_makemain[provider].value != "hd") and self.providers[provider].get("show_fta_options", True) and not self.providers_FTA_only[provider].value:
 					provider_config.setMakeHD()
 
 				if self.providers_makefta[provider] and self.providers_makefta[provider].value and not self.providers_FTA_only[provider].value:
 					provider_config.setMakeFTA()
 
 				# Allow FTA HD bouquet when FTA only is enabled too
-				if self.providers_makeftahd[provider] and self.providers_makeftahd[provider].value and (self.providers_makemain[provider] is None or self.providers_makemain[provider].value != "ftahd"):
+				if self.providers_makeftahd[provider] and self.providers_makeftahd[provider].value:
 					provider_config.setMakeFTAHD()
 
 				if self.providers_swapchannels[provider] and self.providers_swapchannels[provider].value:

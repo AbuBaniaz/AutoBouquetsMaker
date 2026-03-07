@@ -119,7 +119,7 @@ class Manager():
 					self.services[provider_key]["video"] = video_services_tmp
 
 				# CustomLCN
-				self.services[provider_key] = Tools().customLCN(self.services[provider_key], provider_key, self.providerConfigs[provider_key].getArea())
+				self.services[provider_key] = Tools().customLCN(self.services[provider_key], provider_key, self.providerConfigs[provider_key].getArea(), self.providerConfigs[provider_key])
 
 		for provider_key in self.bouquetsOrder:
 			if provider_key in providers:
@@ -208,6 +208,12 @@ class Manager():
 						bouquet_id = providers[provider_key]["bouquets"][bouquet_key]["bouquet"]
 					except:
 						bouquet_id = -1
+
+					# Use SD BAT stream if provider has sd_bouquet and SD stream is selected
+					bouquet_entry = providers[provider_key]["bouquets"].get(bouquet_key, {})
+					if provider_config.isSDStream() and "sd_bouquet" in bouquet_entry:
+						bouquet_id = bouquet_entry["sd_bouquet"]
+						print("[ABM-Manager][read] Using SD stream bouquet_id 0x%x for %s" % (bouquet_id, provider_key), file=log)
 					if providers[provider_key]["streamtype"] == 'dvbc':
 						bouquet = providers[provider_key]["bouquets"][bouquet_key]
 						tmp = scanner.updateTransponders(self.transponders, True, customtransponders, bouquet["netid"], bouquet["bouquettype"])
@@ -252,7 +258,11 @@ class Manager():
 
 					scanner.updateTransponders(self.transponders, False)
 					bouquet = providers[provider_key]["bouquets"][bouquet_key]
-					self.services[provider_key] = scanner.updateAndReadServicesSKY(bouquet["bouquet"],
+					# Use SD BAT stream if provider has sd_bouquet and SD stream is selected
+					sky_bouquet_id = bouquet["sd_bouquet"] if (provider_config.isSDStream() and "sd_bouquet" in bouquet) else bouquet["bouquet"]
+					if provider_config.isSDStream() and "sd_bouquet" in bouquet:
+						print("[ABM-Manager][read] Using SD stream bouquet_id 0x%x for %s" % (sky_bouquet_id, provider_key), file=log)
+					self.services[provider_key] = scanner.updateAndReadServicesSKY(sky_bouquet_id,
 						bouquet["region"], bouquet["key"], self.transponders,
 						providers[provider_key]["servicehacks"], provider_config)
 

@@ -76,6 +76,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 		self.providers_FTA_only = {}
 		self.providers_custom_list = {}
 		self.providers_extraservices = {}
+		self.providers_sdstream = {}
 		self.providers_order = []
 		self.orbital_supported = []
 
@@ -162,6 +163,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 			self.providers_makeftahd[provider] = None
 			self.providers_custom_list[provider] = None
 			self.providers_extraservices[provider] = None
+			self.providers_sdstream[provider] = None
 
 			if len(list(self.providers[provider]["sections"].keys())) > 1:  # only if there's more than one section
 				sections_default = True
@@ -247,6 +249,18 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 					default_area = providers_tmp_configs[provider].getArea()
 				self.providers_area[provider] = ConfigSelection(default=default_area, choices=arealist)
 
+			# SD/HD stream toggle - only shown for providers with sd_bouquet in their XML
+			has_sd_toggle = any(
+				"sd_bouquet" in self.providers[provider]["bouquets"][k]
+				for k in self.providers[provider]["bouquets"]
+			)
+			if has_sd_toggle:
+				sd_default = provider in providers_tmp_configs and providers_tmp_configs[provider].isSDStream()
+				self.providers_sdstream[provider] = ConfigSelection(
+					default="sd" if sd_default else "hd",
+					choices=[("hd", "HD"), ("sd", "SD")]
+				)
+
 			# FTA only
 			FTA_only = config.autobouquetsmaker.FTA_only.value.split("|")
 			FTA = self.providers[provider]["protocol"] != "fastscan" and self.providers[provider]["show_fta_options"] and provider in FTA_only
@@ -295,6 +309,9 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 				if len(self.providers[provider]["bouquets"]) > 0:
 					setupList.append(getConfigListEntry(indent + _("Region"), self.providers_area[provider], _("This option allows you to choose what region of the country you live in, so it populates the correct channels for your region.")))
 
+				if self.providers_sdstream[provider] is not None:
+					setupList.append(getConfigListEntry(indent + _("HD or SD channel list"), self.providers_sdstream[provider], _("Select whether to use the HD or SD channel list for this provider.")))
+
 				# fta only
 				if self.providers[provider]["protocol"] != "fastscan" and self.providers[provider]["show_fta_options"]:
 					setupList.append(getConfigListEntry(indent + _("FTA only"), self.providers_FTA_only[provider], _("This affects all bouquets. Select 'no' to scan in all services. Select 'yes' to skip encrypted ones.")))
@@ -317,7 +334,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 				if self.providers_makeftahd[provider] and (self.providers_makemain[provider] is None or self.providers_makemain[provider].value != "ftahd") and not self.providers_FTA_only[provider].value:
 					setupList.append(getConfigListEntry(indent + _("Create FTA HD bouquet"), self.providers_makeftahd[provider], _("This option will create a FreeToAir High Definition bouquet, it will group all FTA HD channels into this bouquet.")))
 
-				if ((self.providers_makemain[provider] and self.providers_makemain[provider].value not in ("no", "custom")) or (self.providers_makesections[provider] and self.providers_makesections[provider].value is True)) and self.providers[provider]["swapchannels"]:
+				if ((self.providers_makemain[provider] and self.providers_makemain[provider].value == "yes") or (self.providers_makesections[provider] and self.providers_makesections[provider].value is True)) and len(self.providers[provider]["swapchannels"]) > 0:
 					setupList.append(getConfigListEntry(indent + _("Swap channels"), self.providers_swapchannels[provider], _("This option will swap SD versions of channels with HD versions. (eg BBC One SD with BBC One HD, Channel Four SD with with Channel Four HD)")))
 		
 				if self.providers_custom_list[provider]:
@@ -394,6 +411,9 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 
 				if self.providers_custom_list[provider] and self.providers_custom_list[provider].value:
 					provider_config.setCustomList()
+
+				if self.providers_sdstream[provider] and self.providers_sdstream[provider].value == "sd":
+					provider_config.setSDStream()
 
 				config_string += provider_config.serialize()
 

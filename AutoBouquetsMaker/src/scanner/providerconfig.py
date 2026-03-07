@@ -132,6 +132,16 @@ class ProviderConfig():
 	def unsetCustomList(self):
 		self.flags &= 0xff
 
+	def isSDStream(self):
+		# True = use sd_bouquet BAT ID (SD stream); False (default) = use bouquet BAT ID (HD stream)
+		return (self.flags & 0x200) == 0x200
+
+	def setSDStream(self):
+		self.flags |= 0x200
+
+	def unsetSDStream(self):
+		self.flags &= ~0x200
+
 	def unsetAllFlags(self):
 		self.flags = 0x00
 

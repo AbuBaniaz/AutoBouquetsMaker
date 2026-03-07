@@ -17,14 +17,10 @@
 		onid="70"
 	/>
 	<dvbsconfigs>
-		<configuration key="sd_DNK" bouquet="0x1" region="0x0">Denmark SD</configuration>
-		<configuration key="hd_DNK" bouquet="0x1" region="0x0">Denmark HD</configuration>
-		<configuration key="sd_FIN" bouquet="0x2" region="0x0">Finland SD</configuration>
-		<configuration key="hd_FIN" bouquet="0x2" region="0x0">Finland HD</configuration>
-		<configuration key="sd_NOR" bouquet="0x3" region="0x0">Norway SD</configuration>
-		<configuration key="hd_NOR" bouquet="0x3" region="0x0">Norway HD</configuration>
-		<configuration key="sd_SWE" bouquet="0x4" region="0x0">Sweden SD</configuration>
-		<configuration key="hd_SWE" bouquet="0x4" region="0x0">Sweden HD</configuration>
+		<configuration key="DNK" sd_bouquet="0x1" bouquet="0x1" region="0x0">Denmark</configuration>
+		<configuration key="FIN" sd_bouquet="0x2" bouquet="0x2" region="0x0">Finland</configuration>
+		<configuration key="NOR" sd_bouquet="0x3" bouquet="0x3" region="0x0">Norway</configuration>
+		<configuration key="SWE" sd_bouquet="0x4" bouquet="0x4" region="0x0">Sweden</configuration>
 	</dvbsconfigs>
 	<sections>
 		<section number="1">Canal Digital Nordic</section>

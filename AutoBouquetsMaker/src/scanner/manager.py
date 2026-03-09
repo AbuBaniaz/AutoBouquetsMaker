@@ -119,7 +119,7 @@ class Manager():
 					self.services[provider_key]["video"] = video_services_tmp
 
 				# CustomLCN
-				self.services[provider_key] = Tools().customLCN(self.services[provider_key], provider_key, self.providerConfigs[provider_key].getArea())
+				self.services[provider_key] = Tools().customLCN(self.services[provider_key], provider_key)
 
 		for provider_key in self.bouquetsOrder:
 			if provider_key in providers:

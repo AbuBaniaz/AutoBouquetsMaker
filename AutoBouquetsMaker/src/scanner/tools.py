@@ -38,7 +38,7 @@ class Tools():
 		tool.close()
 		return dom
 
-	def customLCN(self, services, section_identifier, current_bouquet_key):
+	def customLCN(self, services, section_identifier):
 		user_custom_dir = os.path.realpath(resolveFilename(SCOPE_CONFIG)) + "/AutoBouquetsMaker/custom"
 		is_sorted = False
 
@@ -70,13 +70,13 @@ class Tools():
 					servicename.replace("&", "+")
 				))
 			xml_out_list.append("\t</lcnlist>\n</custom>\n")
-			xmlout = open(user_custom_dir + "/EXAMPLE_" + ("sd" if current_bouquet_key.startswith('sd') else "hd") + "_" + section_identifier + "_Custom" + ("radio" if type == "radio" else "") + "LCN.xml", "w")
+			xmlout = open(user_custom_dir + "/EXAMPLE_" + section_identifier + "_Custom" + ("radio" if type == "radio" else "") + "LCN.xml", "w")
 			xmlout.write(''.join(xml_out_list))
 			xmlout.close()
 			del xml_out_list
 
 			# Read CustomLCN file
-			customfile = self.getCustomPath(("sd" if current_bouquet_key.startswith('sd') else "hd") + "_" + section_identifier + "_Custom" + ("radio" if type == "radio" else "") + "LCN.xml")
+			customfile = self.getCustomPath(section_identifier + "_Custom" + ("radio" if type == "radio" else "") + "LCN.xml")
 			dom = self.parseXML(customfile)
 			if dom is None:
 				print("[ABM-Tools][customLCN] No custom " + type + " LCN file for " + section_identifier + ".", file=log)

@@ -49,7 +49,7 @@ Each time ABM runs it makes an example CustomLCN xml file for each provider that
 e.g. 'EXAMPLE_hd_sat_freesat_CustomLCN.xml'. These files are archived in:
 /etc/enigma2/AutoBouquetsMaker/custom
 To make your own custom LCN file just delete 'EXAMPLE_' from the filename,
-i.e. hd_sat_freesat_CustomLCN.xml. Configurations in the provider xml file, such as channel swap,
+i.e. freesat_CustomLCN.xml. Configurations in the provider xml file, such as channel swap,
 etc, are done after CustomLCN has been processed.
 
 The following is how to edit the file. Just cut and paste the lines into the order you want.

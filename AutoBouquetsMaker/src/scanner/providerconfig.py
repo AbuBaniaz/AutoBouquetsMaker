@@ -132,6 +132,15 @@ class ProviderConfig():
 	def unsetCustomList(self):
 		self.flags &= 0xff
 
+	def setSDStream(self):
+		self.flags |= 0x200
+
+	def isSDStream(self):
+		return (self.flags & 0x200) == 0x200
+
+	def unsetSDStream(self):
+		self.flags &= 0x1ff
+
 	def unsetAllFlags(self):
 		self.flags = 0x00
 

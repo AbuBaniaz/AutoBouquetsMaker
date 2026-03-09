@@ -224,6 +224,8 @@ class Providers():
 										configuration["key"] = self.encodeNODE(node2.attributes.item(i).value)
 									elif node2.attributes.item(i).name == "bouquet":
 										configuration["bouquet"] = int(node2.attributes.item(i).value, 16)
+									elif node2.attributes.item(i).name == "sd_bouquet":
+										configuration["sd_bouquet"] = int(node2.attributes.item(i).value, 16)
 									elif node2.attributes.item(i).name == "region":
 										# allow region to be a list of values (e.g. so we can accept both SD and HD descriptors)
 										configuration["region"] = list(map(lambda x: int(x.strip(), 16), node2.attributes.item(i).value.split(",")))
@@ -232,7 +234,7 @@ class Providers():
 								if len(node2.childNodes) == 1 and node2.childNodes[0].nodeType == node2.TEXT_NODE:
 									configuration["name"] = self.encodeNODE(node2.childNodes[0].data)
 
-								if len(list(configuration.keys())) == 4:
+								if len(list(configuration.keys())) in (4, 5):
 									provider["bouquets"][configuration["key"]] = configuration
 
 					elif node.tagName == "dvbcconfigs":

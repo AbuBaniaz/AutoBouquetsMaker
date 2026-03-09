@@ -252,7 +252,11 @@ class Manager():
 
 					scanner.updateTransponders(self.transponders, False)
 					bouquet = providers[provider_key]["bouquets"][bouquet_key]
-					self.services[provider_key] = scanner.updateAndReadServicesSKY(bouquet["bouquet"],
+					if provider_config.isSDStream() and "sd_bouquet" in bouquet:
+						sky_bouquet_id = bouquet["sd_bouquet"]
+					else:
+						sky_bouquet_id = bouquet["bouquet"]
+					self.services[provider_key] = scanner.updateAndReadServicesSKY(sky_bouquet_id,
 						bouquet["region"], bouquet["key"], self.transponders,
 						providers[provider_key]["servicehacks"], provider_config)
 

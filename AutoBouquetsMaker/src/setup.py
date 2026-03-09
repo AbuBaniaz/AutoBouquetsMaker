@@ -76,6 +76,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 		self.providers_FTA_only = {}
 		self.providers_custom_list = {}
 		self.providers_extraservices = {}
+		self.providers_sdstream = {}
 		self.providers_order = []
 		self.orbital_supported = []
 
@@ -162,6 +163,11 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 			self.providers_makeftahd[provider] = None
 			self.providers_custom_list[provider] = None
 			self.providers_extraservices[provider] = None
+			self.providers_sdstream[provider] = None
+
+			if self.providers[provider]["protocol"] == "sky" and any("sd_bouquet" in self.providers[provider]["bouquets"][k] for k in self.providers[provider]["bouquets"]):
+				sdstream_default = provider in providers_tmp_configs and providers_tmp_configs[provider].isSDStream()
+				self.providers_sdstream[provider] = ConfigYesNo(default=sdstream_default)
 
 			if len(list(self.providers[provider]["sections"].keys())) > 1:  # only if there's more than one section
 				sections_default = True
@@ -295,6 +301,9 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 				if len(self.providers[provider]["bouquets"]) > 0:
 					setupList.append(getConfigListEntry(indent + _("Region"), self.providers_area[provider], _("This option allows you to choose what region of the country you live in, so it populates the correct channels for your region.")))
 
+				if self.providers_sdstream[provider] is not None:
+					setupList.append(getConfigListEntry(indent + _("SD Channels"), self.providers_sdstream[provider], _("Select 'yes' to scan the SD stream for this provider, or 'no' to scan the HD stream.")))
+
 				# fta only
 				if self.providers[provider]["protocol"] != "fastscan" and self.providers[provider]["show_fta_options"]:
 					setupList.append(getConfigListEntry(indent + _("FTA only"), self.providers_FTA_only[provider], _("This affects all bouquets. Select 'no' to scan in all services. Select 'yes' to skip encrypted ones.")))
@@ -394,6 +403,9 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 
 				if self.providers_custom_list[provider] and self.providers_custom_list[provider].value:
 					provider_config.setCustomList()
+
+				if self.providers_sdstream[provider] and self.providers_sdstream[provider].value:
+					provider_config.setSDStream()
 
 				config_string += provider_config.serialize()
 

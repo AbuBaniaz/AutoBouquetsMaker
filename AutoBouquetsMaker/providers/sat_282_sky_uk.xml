@@ -309,14 +309,14 @@ except:
 
 	whitelist_by_id = [
 		1003, # MUTV HD
-		1372,
+		1372, # COLORS HD
 		3080, # W HD
 		3077, # Alibi HD
 		3078, # Dave HD
-		3812,
-		3831,
-		4039,
-		4056,
+		3812, # TLC HD #this is fta, delete
+		3831, # MTV HD
+		4039, # Nick Jr. HD
+		4056, # ComedyCentHD
 		5272, # Racing UK HD
 	]
 

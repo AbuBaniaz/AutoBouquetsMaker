@@ -225,20 +225,20 @@ except:
 		3705: 112, # ComedyCentral
 		2709: 127, # ComedyXtra
 		2418: 154, # ID
-		1409: 301, #
-		1815: 304, #
-		1808: 306, #
-		1001: 307, #
-		1341: 401, #
-		1326: 402, #
-		3848: 403, #
-		1302: 404, #
-		1324: 405, #
-		1306: 406, #
-		1285: 407, #
-		1333: 408, #
-		3839: 412, #
-		4091: 416, #
+		1409: 301, # non-existent Sky Premiere
+		1815: 304, # non-existent Sky Greats
+		1808: 306, # non-existent Sky Family
+		1001: 307, # non-existent Sky Action
+		1341: 401, # non-existent SkySpMainEv
+		1326: 402, # non-existent SkySp PL
+		3848: 403, # SkySp F'ball
+		1302: 404, # SkySp Cricket
+		1324: 405, # SkySp Golf
+		1306: 406, # SkySp F1
+		1285: 407, # SkySp Tennis
+		1333: 408, # SkySp Action
+		3839: 412, # SkySp+
+		4091: 416, # SkySp Mix
 		2517: 604, # Nicelodeon
 		5527: 606, # Nicktoons
 		3356: 615, # Nick Jr
@@ -367,20 +367,20 @@ except:
 	]
 
 	broken_CHIDs = [  # not currently used
-		0x44B,
-		0x48F,
-		0x490,
-		0x492,
-		0x4BA,
-		0x4C2,
-		0x4E2,
-		0x4F6,
-		0x551,
-		0xB00,
-		0xFC2,
-		0xFD2,
-		0xFD6,
-		0x177E,
+        0x44B, #1099, TNTSBoxOff2HD
+        0x48F, #1167, STV Dundee HD
+        0x490, #1168, STV North HD
+        0x492, #1170, STV East HD
+        0x4BA, #1210, TNTSBoxOffHD
+        0x4C2, #1218, TNTSBoxOff2HD
+        0x4E2, #1024, non-existent
+        0x4F6, #1270, RTÉ2 HD
+        0x551, #1361, non-existent
+        0xB00, #2816, RTÉ One HD
+        0xFC2, #4034, TG4 HD
+        0xFD2, #4050, Sky News HD
+        0xFD6, #4054, Sky News HD
+        0x177E, #6014, TNTSBoxOffHD
 	]
 
 # Correct service type of HD channels not marked as such
